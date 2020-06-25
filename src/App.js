@@ -1,35 +1,42 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Route, Link, Switch, Redirect } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import MyTeam from "./MyTeam/MyTeam";
 import Pokedex from "./PokedexList/Pokedex";
+import SinglePokemon from "./Pokemon/Pokemon";
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
-  const handleClick = (pokemon) => {
-    console.log("app- handleclick", pokemon);
+  const [myTeam, setMyTeam] = useState([]);
+
+  const addToTeam = (element) => {
+    setMyTeam(element);
   };
   return (
     <div className="App">
       <nav>
-        <Link to="/">
+        <Link to="/pokemon">
           <h3>Pokemon</h3>
         </Link>
         <Link to="/MyTeam"> My Team </Link>
         <Link to="/Pokedex">Pokedex</Link>
       </nav>
       <main>
-        <Route exact path="/" component={Pokedex} />
-        <Route exact path="/Pokedex" component={Pokedex} />
         <Route
           exact
-          path="/MyTeam"
-          component={MyTeam}
-          handleClick={handleClick}
+          path="/Pokedex"
+          render={(routerProps) => <Pokedex {...routerProps} />}
         />
         <Route
+          path="/MyTeam"
+          render={(routerProps) => <MyTeam myTeam={myTeam} {...routerProps} />}
+        />
+        <Route />
+        <Route
+          exact
           path="/pokemon/:name"
-          render={(routerProps) => <SinglePokemon {...routerProps} />}
+          render={(routerProps) => (
+            <SinglePokemon addToTeam={addToTeam} {...routerProps} />
+          )}
         />
       </main>
     </div>

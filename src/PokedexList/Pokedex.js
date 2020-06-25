@@ -1,25 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-function PokedexList() {
-  const [pokemonList, setPokemonList] = useState([]);
-  const url = "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0";
-  const makeAPICall = async () => {
-    const res = await fetch(url);
-    const json = await res.json();
-    setPokemonList(json.results);
+const Pokedex = (props) => {
+  const [pokemonData, getPokemonData] = useState([]);
+
+  const fetchItems = async () => {
+    const res = await fetch(
+      "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+    );
+    const data = await res.json();
+    getPokemonData(data.results);
   };
-  makeAPICall();
-  let allPokemon = pokemonList.map((pokemon, index) => {
-    return <p key={index}>{pokemon.name}</p>;
-  });
+  useEffect(() => {
+    fetchItems();
+  }, []);
   return (
-    <>
-      <ul>{allPokemon}</ul>
-      <Link to={"/pokemon/" + element.name}>
-        <h3>{element.name}</h3>
-      </Link>
-    </>
+    <div className="pokedex list">
+      {pokemonData.map((element, index) => {
+        return (
+          <h5 key={element.id}>
+            <Link to={`/pokemon/${element.name}`}> {element.name}</Link>
+          </h5>
+        );
+      })}
+      ;
+    </div>
   );
-}
-export default PokedexList;
+};
+
+export default Pokedex;

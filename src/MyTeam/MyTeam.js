@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-function MyTeam() {
+const MyTeam = (props) => {
+  console.log(props);
   return (
-    <div className="about">
+    <>
       <h1> My Team </h1>
-    </div>
+      {props.myTeam.map((element, index) => {
+        return (
+          <div>
+            <img src={element.image} src="" />
+            <h4> Name: {element.name}</h4>
+            <h4>Height: {element.height}</h4>
+            <h4>Weight: {element.weight}</h4>
+            <h4>Type: {element.type}</h4>
+          </div>
+        );
+      })}
+    </>
   );
-}
+};
 
 export default MyTeam;
